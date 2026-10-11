@@ -1,0 +1,29 @@
+{
+  "name": "techtree",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node scripts/prepare-sites-build.mjs",
+    "preview": "vite preview",
+    "test:sites": "node --test tests/sites-worker.test.mjs"
+  },
+  "dependencies": {
+    "@browser-logos/chrome": "^2.0.0",
+    "@browser-logos/edge": "^2.0.7",
+    "@browser-logos/firefox": "^3.0.10",
+    "@browser-logos/opera": "^1.1.11",
+    "@browser-logos/safari": "^2.1.0",
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/manrope": "^5.3.0",
+    "@fortawesome/free-brands-svg-icons": "^7.3.1",
+    "@fortawesome/react-fontawesome": "^3.5.0",
+    "@phosphor-icons/react": "^2.1.10",
+    "@vitejs/plugin-react": "5.0.4",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "recharts": "^3.10.1",
+    "vite": "6.4.2"
+  }
+}
