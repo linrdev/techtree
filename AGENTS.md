@@ -6,6 +6,8 @@ The user selected direction 3: an editorial white page with cobalt actions, an a
 
 The final spacing revision adds 24px on each side of desktop feature/privacy/download sections and 16px on mobile. Preserve this breathing room and the alignment between each heading, chapter marker and demonstration panel.
 
+The offline chapter leads with “Choose data chunks to save.” Explain splitting page data and removing bloat, manual entry from the extension icon’s right-click menu, and a URL-specific `agent.md` with manually authored CSS/HTML references for repeatable scraper-agent updates. Keep the concise copy and existing white/cobalt format. The website is a sample demo; it does not capture a real page or run a scraper.
+
 Run the local server yourself and open the preview in the browser available to this environment. Do not give the user server-start instructions when you can run it.
 
 Before making substantial visual changes, use the Product Design plugin's `get-context` skill when the visual source is unclear or no longer matches the current goal. When the user gives durable prototype-specific design feedback, preferences, or decisions, record them in `AGENTS.md`.

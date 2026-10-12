@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { DATA_CHUNKS, SAMPLE_PAGE_URL, DEFAULT_MANUAL, pageUrl, buildAgentMarkdown, buildOfflineHtml } from "./save-data.js";
 import {
   ArrowRight,
   ArrowDown,
@@ -418,34 +419,41 @@ function MetricsDemo() {
   );
 }
 function KeepDemo() {
-  const [metadata, setMetadata] = useState(true),
-    [files, setFiles] = useState(true),
+  const [selected, setSelected] = useState({ content: true, styles: true, metadata: true }),
+    [removeBloat, setRemoveBloat] = useState(true),
     [cache, setCache] = useState(false),
+    [format, setFormat] = useState("agent"),
+    [url, setUrl] = useState(SAMPLE_PAGE_URL),
+    [instructions, setInstructions] = useState(DEFAULT_MANUAL),
     [saved, setSaved] = useState(false);
+  const hasChunks = Object.values(selected).some(Boolean);
+  const canExport = hasChunks && !!pageUrl(url);
+  const contents = canExport ? (format === "agent"
+    ? buildAgentMarkdown({ url, selected, removeBloat, instructions })
+    : buildOfflineHtml({ url, selected, removeBloat })) : "";
+  const filename = format === "agent" ? "agent.md" : "techtree-sample.html";
+  const mime = format === "agent" ? "text/markdown" : "text/html";
+  const edit = (action) => { action(); setSaved(false); };
+  const moveFormat = (event) => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    const next = event.key === "Home" ? "agent" : event.key === "End" ? "html" : format === "agent" ? "html" : "agent";
+    edit(() => setFormat(next));
+    document.getElementById(`format-${next}`).focus();
+  };
   return (
     <div className="demo-window keep-demo">
-      <DemoTitle>Save page</DemoTitle>
+      <DemoTitle>Save chosen data</DemoTitle>
       <div className="keep-content">
         <div className="save-options">
+          <b className="chunk-label">Choose data chunks</b>
+          {DATA_CHUNKS.map((chunk) => <label key={chunk.id}>
+            <input type="checkbox" checked={selected[chunk.id]} onChange={(e) => edit(() => setSelected({ ...selected, [chunk.id]: e.target.checked }))} />
+            <span>{chunk.label}<small className="chunk-reference">{chunk.selector}</small></span>
+          </label>)}
           <label>
-            <input
-              type="checkbox"
-              checked={metadata}
-              onChange={(e) => setMetadata(e.target.checked)}
-            />
-            <span>
-              Page metadata <small>(title, URL, technologies)</small>
-            </span>
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              checked={files}
-              onChange={(e) => setFiles(e.target.checked)}
-            />
-            <span>
-              Downloaded assets <small>(CSS, JS, images, fonts)</small>
-            </span>
+            <input type="checkbox" checked={removeBloat} onChange={(e) => edit(() => setRemoveBloat(e.target.checked))} />
+            <span>Remove bloat <small className="chunk-reference">Ads, promos & embedded frames</small></span>
           </label>
           <label>
             <input
@@ -457,25 +465,24 @@ function KeepDemo() {
               Choose cache items <small>(demo selection)</small>
             </span>
           </label>
-          <p className="demo-note">
-            A sample export; your browser data stays unchanged.
-          </p>
+          <p className="capture-entry">Right-click the extension icon<br /><span>→ Choose data chunks to save</span></p>
+          <p className="demo-note">Sample data; no browser page is captured.</p>
         </div>
         <div className="export-copy">
-          <b>Export for offline viewing</b>
-          <p>
-            Keep a readable HTML copy with its assets. Dynamic features may
-            still need a connection.
-          </p>
-          <a
-            className="outline-button"
-            download="techtree-sample.html"
-            href={`/downloads/sample-${metadata ? 1 : 0}${files ? 1 : 0}.html`}
-            onClick={() => setSaved(true)}
-          >
-            <DownloadSimple />
-            {saved ? "Export sample again" : "Export sample HTML"}
-          </a>
+          <div className="export-format-tabs" role="tablist" aria-label="Save format" onKeyDown={moveFormat}>
+            <button type="button" id="format-agent" role="tab" tabIndex={format === "agent" ? 0 : -1} aria-selected={format === "agent"} aria-controls="save-format-panel" onClick={() => edit(() => setFormat("agent"))}>agent.md</button>
+            <button type="button" id="format-html" role="tab" tabIndex={format === "html" ? 0 : -1} aria-selected={format === "html"} aria-controls="save-format-panel" onClick={() => edit(() => setFormat("html"))}>Offline HTML</button>
+          </div>
+          <div role="tabpanel" id="save-format-panel" aria-labelledby={`format-${format}`}>
+            <label className="recipe-field">Page URL<input type="url" aria-label="Capture page URL" value={url} onChange={(e) => edit(() => setUrl(e.target.value))} spellCheck="false" /></label>
+            {format === "agent" ? <>
+              <p>A manual for this URL’s layout and style. Edit the CSS/HTML instructions for your scraper agent.</p>
+              <label className="recipe-field">Manual instructions<textarea aria-label="CSS and HTML capture instructions" value={instructions} onChange={(e) => edit(() => setInstructions(e.target.value))} rows={4} /></label>
+            </> : <p>Keep the selected chunks in a readable HTML copy. Dynamic features may still need a connection.</p>}
+            {canExport ? <a className="outline-button" download={filename} href={`data:${mime};charset=utf-8,${encodeURIComponent(contents)}`} onClick={() => setSaved(true)}>
+              <DownloadSimple />{format === "agent" ? "Download sample agent.md" : "Export sample HTML"}
+            </a> : <button className="outline-button" disabled>{hasChunks ? "Enter a page URL" : "Choose a data chunk"}</button>}
+          </div>
           <span className="export-status" role="status">
             {saved ? "Sample export requested." : ""}
           </span>
@@ -754,11 +761,12 @@ export function App() {
           </article>
           <article className="story-row keep-row" id="keep" data-step="2">
             <div className="story-copy">
-              <h2>Make the page yours to revisit.</h2>
+              <h2>Choose data chunks to save.</h2>
               <p>
-                Save browsing metadata, keep downloaded assets, selectively
-                remove cached items, and export HTML for offline viewing.
+                Keep the useful parts. Drop the bloat. Export HTML to revisit
+                offline.
               </p>
+              <p className="keep-agent-note">Write URL-specific CSS/HTML instructions in <code>agent.md</code> so a scraper agent can keep valuable knowledge up to date.</p>
             </div>
             <KeepDemo />
           </article>

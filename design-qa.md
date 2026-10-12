@@ -1,3 +1,13 @@
+# Offline capture manual update
+
+The offline chapter now introduces selected data chunks, bloat removal, a manual start from the extension icon’s right-click menu, and URL-specific `agent.md` instructions with CSS/HTML references. The interactive sample exports only selected chunks, records authored instructions and validates its target URL. It does not capture a real browser page or run a scraper.
+
+Five capture-export tests passed: exact URL and manual references, omitted chunks, bloat selection, invalid URLs/empty selections, and HTML escaping. Production build and hosting tests are run by the Sites packaging workflow. Fresh browser visual QA is unverified: the managed Sites environment does not expose the required control-browser plugin. Publication can proceed under the Sites workflow with this limit recorded.
+
+The approved Manrope/Inter fonts, white/cobalt colors, assets and major section spacing are preserved. The offline demo panel grows to fit the URL and manual editor and stacks into one column on phones. New format tabs support arrow keys, Home and End. The earlier visual QA below is historical and applies to the prior page version.
+
+---
+
 # Final spacing revision
 
 Final result: **passed**.

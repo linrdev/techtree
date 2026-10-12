@@ -18,6 +18,7 @@ npm run dev -- --host 0.0.0.0 --port 4173
 ```sh
 npm run build
 npm run test:sites
+npm run test:capture
 ```
 
 Static output: `dist/client/`. The bundled Worker and hosting metadata are generated under `dist/server/` and `dist/.openai/`. The project remains compatible with Sites hosting.
@@ -44,7 +45,9 @@ No addresses or listings have been invented. With blank store entries, each brow
 - Primary CTA and browser strip scroll to the browser download section.
 - The detected desktop browser receives subtle emphasis. Browser detection is only a convenience; all five choices remain available.
 - Clickable inspector tabs, a searchable sample DOM, and asset category filters.
-- Sample HTML exports reflect the metadata and asset checkboxes. These files contain example names and metadata, not actual downloaded website assets.
+- Choose page-content, style/asset and metadata chunks, with an optional bloat-removal choice.
+- Editable URL-specific `agent.md` exports include CSS/HTML references and manually written scraper instructions; Offline HTML exports reflect the same chunk choices. The samples contain example content and asset names, not captured website assets.
+- The offline chapter explains entering the feature manually through the extension icon’s right-click menu and reusing the manual for agent-driven updates.
 - A demo privacy switch; it does not change real browser settings or send a lookup request.
 - Chapter markers track the visible section.
 - Responsive navigation, keyboard focus states, and reduced-motion support.
@@ -52,7 +55,7 @@ No addresses or listings have been invented. With blank store entries, each brow
 
 ## Scope
 
-This project is the introduction website and interactive product demonstration. It does not include an installable extension. Browser editions, feature parity, permissions, marketplace publication and online detection services must be implemented and tested separately. The page uses sample data throughout its inspector views.
+This project is the introduction website and interactive product demonstration. It does not include an installable extension or a scraper agent. Browser editions, icon context-menu behavior, feature parity, permissions, marketplace publication and online detection services must be implemented and tested separately. The page uses sample data throughout its inspector views. An exported `agent.md` is a page-specific manual; an external agent/runtime is needed to automate captures or updates.
 
 ## Deploy
 

@@ -1901,6 +1901,114 @@ input[type="checkbox"] {
 .story-row {
   padding-block: 48px;
 }
+
+/* Selected chunks and the page-specific scraper manual. */
+.keep-content {
+  grid-template-columns: 0.95fr 1.2fr;
+  gap: 14px;
+  padding: 14px;
+}
+.keep-content > div {
+  min-width: 0;
+}
+.chunk-label {
+  display: block;
+  font-size: 11px;
+  margin-bottom: 14px;
+}
+.keep-demo .save-options label {
+  margin-bottom: 10px;
+}
+.chunk-reference {
+  display: block;
+  margin-top: 2px;
+  overflow-wrap: anywhere;
+  line-height: 1.4;
+}
+.capture-entry {
+  color: #536c96;
+  font-size: 10px;
+  line-height: 1.6;
+  margin: 17px 0 0;
+}
+.capture-entry span {
+  color: var(--blue);
+}
+.keep-agent-note code {
+  font-size: 0.88em;
+  color: var(--blue);
+}
+.export-format-tabs {
+  display: flex;
+  gap: 16px;
+  border-bottom: 1px solid #d1e0f5;
+  margin-bottom: 12px;
+}
+.export-format-tabs button {
+  border: 0;
+  border-bottom: 2px solid transparent;
+  padding: 3px 0 8px;
+  min-height: 32px;
+  background: none;
+  font-size: 11px;
+  color: #627597;
+}
+.export-format-tabs button[aria-selected="true"] {
+  color: var(--blue);
+  border-bottom-color: var(--blue);
+  font-weight: 600;
+}
+.recipe-field {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  color: #536888;
+  margin-bottom: 12px;
+}
+.recipe-field input,
+.recipe-field textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 8px;
+  margin-top: 6px;
+  border: 1px solid #bfd2ee;
+  border-radius: 4px;
+  background: white;
+  color: var(--ink);
+  font: 10px/1.5 Inter, sans-serif;
+}
+.recipe-field textarea {
+  resize: vertical;
+  min-height: 92px;
+  font-family: ui-monospace, monospace;
+}
+.keep-demo .outline-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+@media (max-width: 700px) {
+  .keep-content {
+    grid-template-columns: 1fr;
+  }
+  .chunk-label,
+  .export-format-tabs button {
+    font-size: 12px;
+  }
+  .export-format-tabs button {
+    min-height: 44px;
+  }
+  .recipe-field {
+    font-size: 12px;
+  }
+  .recipe-field input,
+  .recipe-field textarea {
+    font-size: 16px;
+  }
+  .capture-entry {
+    font-size: 11px;
+  }
+}
 .discovery-row {
   padding-top: 53px;
   padding-bottom: 46px;
